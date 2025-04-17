@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Xbox 360">
+      <Configuration>Debug</Configuration>
+      <Platform>Xbox 360</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Xbox 360">
+      <Configuration>Release</Configuration>
+      <Platform>Xbox 360</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{490a0ca8-88e3-4f33-978d-5fb70fe83d28}</ProjectGuid>
+    <Keyword>Xbox360Proj</Keyword>
+    <ProjectName>tu6-gsc-utils</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>2010-01</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>.\release\</OutDir>
+    <IntDir>$(SolutionDir)build\$(Configuration)\obj\</IntDir>
+    <RemoteRoot>hdd:\Plugins</RemoteRoot>
+    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <ImageXexOutput>$(OutDir)$(ProjectName).xex</ImageXexOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">
+    <IncludePath>$(SolutionDir)src;$(Xbox360TechPreviewInclude);$(XDKInstallDir)\include\xbox;</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">
+    <IncludePath>$(SolutionDir)src;$(Xbox360TechPreviewInclude);$(XDKInstallDir)\include\xbox;</IncludePath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)$(ProjectName)\%(RelativeDir)</ObjectFileName>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat Condition="'$(Configuration)'=='Debug'">ProgramDatabase</DebugInformationFormat>
+      <Optimization Condition="'$(Configuration)'=='Debug'">Disabled</Optimization>
+      <Optimization Condition="'$(Configuration)'=='Release'">Full</Optimization>
+      <FunctionLevelLinking Condition="'$(Configuration)'=='Release'">true</FunctionLevelLinking>
+      <StringPooling Condition="'$(Configuration)'=='Release'">true</StringPooling>
+      <IntrinsicFunctions Condition="'$(Configuration)'=='Release'">true</IntrinsicFunctions>
+      <FavorSizeOrSpeed Condition="'$(Configuration)'=='Release'">Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">_XBOX</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">NDEBUG;_XBOX</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation Condition="'$(Configuration)'=='Debug'">true</GenerateDebugInformation>
+      <ProgramDatabaseFile Condition="'$(Configuration)'=='Debug'">$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
+      <OptimizeReferences Condition="'$(Configuration)'=='Release'">true</OptimizeReferences>
+      <SetChecksum Condition="'$(Configuration)'=='Release'">true</SetChecksum>
+      <AdditionalDependencies>d3d9ltcg.lib;xgraphics.lib</AdditionalDependencies>
+      <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <Deploy>
+      <DeploymentType>CopyToHardDrive</DeploymentType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">true</ExcludedFromBuild>
+    </Deploy>
+    <ImageXex>
+      <ConfigurationFile>$(SolutionDir)xex.xml</ConfigurationFile>
+    </ImageXex>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\modules\gsc\function.cpp" />
+    <ClCompile Include="src\modules\gsc\loading.cpp" />
+    <ClCompile Include="src\modules\gsc\method.cpp" />
+    <ClCompile Include="src\utils\detour.cpp" />
+    <ClCompile Include="src\utils\filesystem.cpp" />
+    <ClCompile Include="src\modules\init.cpp" />
+    <ClCompile Include="src\utils\xboxkrnl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\game\structs.h" />
+    <ClInclude Include="src\game\functions.h" />
+    <ClInclude Include="src\modules\gsc\function.h" />
+    <ClInclude Include="src\modules\gsc\loading.h" />
+    <ClInclude Include="src\modules\gsc\method.h" />
+    <ClInclude Include="src\stdinclude.h" />
+    <ClInclude Include="src\utils\detour.h" />
+    <ClInclude Include="src\utils\filesystem.h" />
+    <ClInclude Include="src\modules\init.h" />
+    <ClInclude Include="src\utils\xboxkrnl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xex.xml" />
+  </ItemGroup>
+</Project>
